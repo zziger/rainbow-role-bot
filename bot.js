@@ -6,7 +6,7 @@ async function color () {
         console.log(item1.id);
         if (client.guilds.get(item1.id) && client.guilds.get(item1.id).roles.find('name', 'Rainbow').editable)
         await colors.forEach(async function (item, number) {
-            await setTimeout(async function () {client.guilds.get(item1.id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1 && number1 === client.guilds.length-1) setTimeout(function () {color().catch(console.error)}, 500)}, number*500);
+            await setTimeout(async function () {client.guilds.get(item1.id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1 && number1 === client.guilds.last().id) setTimeout(function () {color().catch(console.error)}, 500)}, number*500);
         });
     });
 }
