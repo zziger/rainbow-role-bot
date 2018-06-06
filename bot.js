@@ -21,6 +21,6 @@ client.on('guildCreate', (guild) => {
 client.on('message', (message) => {
 if (message.author.bot) return;
 if (message.content !== '$rainbow') return;
-if (servers_active.indexOf( message.guild.id ) !== -1) color(message.guild.id);
+if (servers_active.indexOf( message.guild.id ) == -1) color(message.guild.id);
 });
 client.login(process.env.TOKEN);
