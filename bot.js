@@ -1,20 +1,26 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const colors = ["FF0D00","FF2800","FF3D00","FF4F00","FF5F00","FF6C00","FF7800","FF8300","FF8C00","FF9500","FF9E00","FFA500","FFAD00","FFB400","FFBB00","FFC200","FFC900","FFCF00","FFD600","FFDD00","FFE400","FFEB00","FFF200","FFFA00","F7FE00","E5FB00","D5F800","C6F500","B7F200","A8F000","98ED00","87EA00","74E600","5DE100","41DB00","1DD300","00C618","00BB3F","00B358","00AC6B","00A67C","009E8E","028E9B","06799F","0969A2","0C5DA5","0E51A7","1047A9","133CAC","1531AE","1924B1","1F1AB2","2A17B1","3415B0","3C13AF","4512AE","4E10AE","560EAD","600CAC","6A0AAB","7608AA","8506A9","9702A7","AD009F","BC008D","C7007D","D0006E","D8005F","DF004F","E7003E","EF002A","F80012"];
-async function color () {
-    client.guilds.forEach(async function (item1, number1) {
-        console.log(item1.id);
-        if (client.guilds.get(item1.id) && client.guilds.get(item1.id).roles.find('name', 'Rainbow').editable)
-        await colors.forEach(async function (item, number) {
-            await setTimeout(async function () {client.guilds.get(item1.id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1 && number1 === client.guilds.last().id) setTimeout(function () {color().catch(console.error)}, 500)}, number*500);
-        });
-    });
+let servers_active = [];
+async function color (guild_id) {
+    if (client.guilds.get(guild_id) && client.guilds.get(guild_id).roles.find('name', 'Rainbow').editable) {
+    if (servers_active.indexOf( guild_id ) == -1) servers_active.push(guild_id)
+    await colors.forEach(async function (item, number) {
+        await setTimeout(async function () {client.guilds.get(guild_id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1) setTimeout(function () {color(guild_id).catch(console.error)}, 500)}, number*500);
+    });}
 }
 client.on('ready', () => {
-    color();
+    client.guilds.forEach((guild) => {
+        color(guild.id);
+    });
 });
 client.on('guildCreate', (guild) => {
     let channels = guild.channels.filter(channel => channel.type === 'text' && channel.permissionsFor(guild.members.get(client.user.id)).has('SEND_MESSAGES'));
     if (channels.size > 0) channels.first().send('Вы пригласили бота **Rainbow Role**.\nДля его корректного функционирования у вас на сервере должна быть роль `Rainbow`, роль бота должна иметь право `управление ролями`, и быть выше роли `Rainbow`.\nЕсли у вас возникли какие-то трудности - обратитесь к <@421030089732653057> (`zziger#8040`)');
+});
+client.on('message', (message) => {
+if (message.author.bot) return;
+if (message.content !== '$rainbow') return;
+if (servers_active.indexOf( message.guild.id ) !== -1) color(message.guild.id);
 });
 client.login(process.env.TOKEN);
