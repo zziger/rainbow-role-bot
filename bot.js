@@ -24,6 +24,7 @@ if (servers_active.indexOf(guild.id) !== -1)
 servers_active.splice( servers_active.indexOf(guild.id), 1 );
 });
 client.on('message', (message) => {
+    if (['dm', 'group', 'category', 'voice'].includes(message.channel.type)) return;
 if (message.author.bot) return;
 if (message.content == '::rainbow') {
 if (servers_active.indexOf( message.guild.id ) == -1) {color(message.guild.id);message.channel.send('Готово')}
