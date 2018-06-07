@@ -18,13 +18,20 @@ client.on('guildCreate', (guild) => {
     let channels = guild.channels.filter(channel => channel.type === 'text' && channel.permissionsFor(guild.members.get(client.user.id)).has('SEND_MESSAGES'));
     if (channels.size > 0) channels.first().send('Вы пригласили бота **Rainbow Role**.\nДля его корректного функционирования у вас на сервере должна быть роль `Rainbow`, роль бота должна иметь право `управление ролями`, и быть выше роли `Rainbow`.\nПосле выполнения всех условий - пишите `::rainbow`\n\nЕсли у вас возникли какие-то трудности - обратитесь к <@421030089732653057> (`zziger#8040`)');
 });
-client.on('guildCreate', (guild) => {
+client.on('guildDelete', (guild) => {
 if (servers_active.indexOf(guild.id) !== -1)
 servers_active.splice( servers_active.indexOf(guild.id), 1 );
 });
 client.on('message', (message) => {
 if (message.author.bot) return;
-if (message.content !== '::rainbow') return;
+if (message.content == '::rainbow') {
 if (servers_active.indexOf( message.guild.id ) == -1) {color(message.guild.id);message.channel.send('Готово')}
+}
+if (message.content == '::stop') {
+if (servers_active.indexOf(guild.id) !== -1) {
+servers_active.splice( servers_active.indexOf(guild.id), 1 );
+message.channel.send('Готово');
+}
+}
 });
 client.login(process.env.TOKEN);
