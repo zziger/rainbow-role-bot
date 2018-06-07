@@ -29,8 +29,8 @@ if (message.content == '::rainbow') {
 if (servers_active.indexOf( message.guild.id ) == -1) {color(message.guild.id);message.channel.send('Готово')}
 }
 if (message.content == '::stop') {
-if (servers_active.indexOf(guild.id) !== -1) {
-servers_active.splice( servers_active.indexOf(guild.id), 1 );
+if (servers_active.indexOf(message.guild.id) !== -1) {
+servers_active.splice( servers_active.indexOf(message.guild.id), 1 );
 message.channel.send('Готово');
 }
 }
