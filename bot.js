@@ -2,12 +2,18 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const colors = ["FF0D00","FF2800","FF3D00","FF4F00","FF5F00","FF6C00","FF7800","FF8300","FF8C00","FF9500","FF9E00","FFA500","FFAD00","FFB400","FFBB00","FFC200","FFC900","FFCF00","FFD600","FFDD00","FFE400","FFEB00","FFF200","FFFA00","F7FE00","E5FB00","D5F800","C6F500","B7F200","A8F000","98ED00","87EA00","74E600","5DE100","41DB00","1DD300","00C618","00BB3F","00B358","00AC6B","00A67C","009E8E","028E9B","06799F","0969A2","0C5DA5","0E51A7","1047A9","133CAC","1531AE","1924B1","1F1AB2","2A17B1","3415B0","3C13AF","4512AE","4E10AE","560EAD","600CAC","6A0AAB","7608AA","8506A9","9702A7","AD009F","BC008D","C7007D","D0006E","D8005F","DF004F","E7003E","EF002A","F80012"];
 let servers_active = [];
+let servers_stop = [];
 async function color (guild_id) {
     if (client.guilds.get(guild_id) && client.guilds.get(guild_id).roles.find('name', 'Rainbow').editable) {
-    if (servers_active.indexOf( guild_id ) == -1) servers_active.push(guild_id)
-    await colors.forEach(async function (item, number) {
-        await setTimeout(async function () {client.guilds.get(guild_id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1) setTimeout(function () {color(guild_id).catch(console.error)}, 500)}, number*500);
-    });}
+    if (!servers_stop.includes(guild_id)) {
+        if (servers_active.indexOf( guild_id ) == -1) servers_active.push(guild_id)
+        await colors.forEach(async function (item, number) {
+            await setTimeout(async function () {client.guilds.get(guild_id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1) setTimeout(function () {color(guild_id).catch(console.error)}, 500)}, number*500);
+        });
+    } else {
+        servers_stop.splice( servers_stop.indexOf(guild_id), 1 );
+    }
+}
 }
 client.on('ready', () => {
     client.guilds.forEach((guild) => {
@@ -32,6 +38,7 @@ if (servers_active.indexOf( message.guild.id ) == -1) {color(message.guild.id);m
 if (message.content == '::stop') {
 if (servers_active.indexOf(message.guild.id) !== -1) {
 servers_active.splice( servers_active.indexOf(message.guild.id), 1 );
+servers_stop.push(message.guild.id);
 message.channel.send('Готово');
 }
 }
