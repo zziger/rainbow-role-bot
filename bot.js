@@ -4,7 +4,7 @@ const colors = ["FF0D00","FF2800","FF3D00","FF4F00","FF5F00","FF6C00","FF7800","
 let servers_active = [];
 let servers_stop = [];
 async function color (guild_id) {
-    if (client.guilds.get(guild_id) && client.guilds.get(guild_id).roles.find('name', 'Rainbow').editable) {
+    if (client.guilds.get(guild_id) && client.guilds.get(guild_id).roles.find('name', 'Rainbow') && client.guilds.get(guild_id).roles.find('name', 'Rainbow').editable) {
     if (!servers_stop.includes(guild_id)) {
         if (servers_active.indexOf( guild_id ) == -1) servers_active.push(guild_id)
         await colors.forEach(async function (item, number) {
