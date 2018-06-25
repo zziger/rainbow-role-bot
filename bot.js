@@ -8,7 +8,7 @@ async function color (guild_id) {
     if (!servers_stop.includes(guild_id)) {
         if (servers_active.indexOf( guild_id ) == -1) servers_active.push(guild_id)
         await colors.forEach(async function (item, number) {
-            await setTimeout(async function () {client.guilds.get(guild_id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1) setTimeout(function () {color(guild_id).catch(console.error)}, 500)}, number*500);
+            await setTimeout(async function () {client.guilds.get(guild_id).roles.find('name', 'Rainbow').setColor(item).catch(console.error);if(number === colors.length-1) setTimeout(function () {return color(guild_id).catch(console.error)}, 500)}, number*500);
         });
     } else {
         servers_stop.splice( servers_stop.indexOf(guild_id), 1 );
