@@ -9,7 +9,7 @@ async function color () {
                 if (role && role.editable) 
                     role.setColor(color);
             })
-        } catch (e) {}
+        } catch (e) {console.error(e)}
     })
 }
 client.on('ready', () => {
