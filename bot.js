@@ -5,7 +5,7 @@ async function color () {
     colors.forEach((color) => {
         try {
             client.guilds.forEach((guild) => {
-                let role = guild.roles.find('Rainbow');
+                let role = guild.roles.find('name', 'Rainbow');
                 if (role && role.editable) 
                     role.setColor(color);
             })
@@ -14,5 +14,9 @@ async function color () {
 }
 client.on('ready', () => {
     color();
+});
+client.on('guildCreate', (guild) => {
+    let channels = guild.channels.filter(channel => channel.type === 'text' && channel.permissionsFor(guild.members.get(client.user.id)).has('SEND_MESSAGES'));
+    if (channels.size > 0) channels.first().send('Вы пригласили бота **Rainbow Role**.\nДля его корректного функционирования у вас на сервере должна быть роль `Rainbow`, роль бота должна иметь право `управление ролями`, и быть выше роли `Rainbow`.\n\nЕсли у вас возникли какие-то трудности - обратитесь к <@421030089732653057> (`zziger#8040`)');
 });
 client.login(process.env.TOKEN);
